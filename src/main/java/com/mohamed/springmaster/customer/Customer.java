@@ -2,12 +2,34 @@ package com.mohamed.springmaster.customer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@Entity
+@Table
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class Customer {
-    private final long id;
-    private final  String name;
-    @JsonIgnore
-    private final String password;
+    @Id
+    private long id;
+    @NotBlank(message = "name must not be blank")
+    private  String name;
+    @NotBlank(message = "password  must not be blank")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private  String password;
+
+    @NotBlank(message = "Email must not be blank")
+    @Email
+    private  String email;
 
 
     public String getPassword() {
@@ -15,11 +37,6 @@ public class Customer {
     }
 
 
-    public Customer(long id, String name, String password) {
-        this.id = id;
-        this.name = name;
-        this.password = password;
-    }
 
     @JsonProperty("customer_id")
     public long getId() {
@@ -33,12 +50,9 @@ public class Customer {
         return name;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+
+
+    public String getEmail() {
+        return email;
     }
 }
